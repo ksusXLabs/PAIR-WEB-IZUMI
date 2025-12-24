@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IZUMI LITE – Mini Bot Pairing</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="card">
+
+    <!-- Banner -->
+    <div class="banner"></div>
+
+    <h1>IZUMI LITE</h1>
+    <p class="sub">Anime WhatsApp Mini Bot</p>
+
+    <input id="num" placeholder="94XXXXXXXXX" />
+    <button onclick="pair()">Generate Pairing Code</button>
+
+    <pre id="out"></pre>
+
+    <footer>
+      Developed by <b>Dev.Rabbit 🥕</b>
+    </footer>
+
+  </div>
+
+<script>
+async function pair() {
+  const num = document.getElementById("num").value.trim();
+  const out = document.getElementById("out");
+  out.innerText = "Processing...";
+
+  const res = await fetch("/pair", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ number: num })
+  });
+
+  const data = await res.json();
+  if (!data.ok) {
+    out.innerText = data.msg;
+  } else {
+    out.innerText = "PAIRING CODE:\n\n" + data.code + "\n\n" + (data.note || "");
+  }
+}
+</script>
+
+</body>
+</html>
+
